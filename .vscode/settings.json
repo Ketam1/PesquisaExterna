@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "pesquisa.h": "c",
+        "registro.h": "c",
+        "index.h": "c",
+        "arvore.h": "c",
+        "stdbool.h": "c",
+        "arvoreb.h": "c",
+        "arvorebstar.h": "c",
+        "time.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c"
+    }
+}
