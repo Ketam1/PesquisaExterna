@@ -1,5 +1,5 @@
 all: main.o pesquisa.o registro.o util.o index.o arvore.o arvoreb.o arvorebstar.o
-	@gcc src/main.o src/pesquisa/pesquisa.o src/registro/registro.o src/util/util.o src/index/index.o src/arvore/arvore.o src/arvoreb/arvoreb.o src/arvorebstar/arvorebstar.o -o pesquisa_exe
+	@gcc src/main.o src/pesquisa/pesquisa.o src/registro/registro.o src/util/util.o src/index/index.o src/arvore/arvore.o src/arvoreb/arvoreb.o src/arvorebstar/arvorebstar.o -o pesquisa
 	@rm src/main.o src/pesquisa/pesquisa.o src/registro/registro.o src/util/util.o src/index/index.o src/arvore/arvore.o src/arvoreb/arvoreb.o src/arvorebstar/arvorebstar.o
 
 main.o: src/main.c
@@ -27,6 +27,6 @@ arvorebstar.o: src/arvorebstar/arvorebstar.c src/arvorebstar/arvorebstar.h
 	@gcc -c src/arvorebstar/arvorebstar.c -Wall -o src/arvorebstar/arvorebstar.o
 
 run:
-	@./pesquisa_exe $(ARGS)
+	@./pesquisa $(ARGS)
 
 # Exemplo de uso: make run ARGS="1 1000 1 12345"
