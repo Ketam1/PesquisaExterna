@@ -73,9 +73,9 @@ int gerarArquivo(const char *caminhoCompleto, int quantidade, int modo) {
     for (int i = 0; i < quantidade; i++) {
         // Gera a chave do registro de acordo com o modo especificado
         if (modo == 1) { // Modo ascendente
-            chaveAtual += 1;
+            chaveAtual++;
         } else if (modo == 2) { // Modo descendente
-            chaveAtual -= 1;
+            chaveAtual--;
         } else if (modo == 3) { // Modo aleatório
             chaveAtual = rand() % (quantidade * 1000) + 1;
         }

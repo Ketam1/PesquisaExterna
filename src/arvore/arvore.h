@@ -2,6 +2,7 @@
 #define ARVORE_H
 
 #include "../registro/registro.h"
+#include <stdio.h>
 
 typedef struct NoArvore {
     int chave; // Chave do registro
@@ -10,8 +11,9 @@ typedef struct NoArvore {
     long direita; // Posição do filho direito no arquivo
 } NoArvore;
 
-long inserirNoArvore(FILE *arquivo, long posicaoRaiz, int chave, long posicaoRegistro, int *transferencias, int *comparacoes);
-NoArvore* buscarNoArvore(NoArvore *raiz, int chave, int *transferencias, int *comparacoes);
-void destruirArvore(NoArvore *raiz);
+long inserirNoArvore(FILE *arquivo, long posicaoRaiz, int chave, long contadorNos, int *transferencias, int *comparacoes);
+long buscarNoArvore(FILE *arquivo, long posicaoRaiz, int chave, int *transferencias, int *comparacoes);
+void construirArvoreBinaria(FILE *arquivoEntrada, int *transferencias, int *comparacoes, long *posicaoRaiz);
+void exibirArvore(FILE *arquivo, long posicaoRaiz);
 
 #endif // ARVORE_H

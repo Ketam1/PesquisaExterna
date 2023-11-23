@@ -93,57 +93,44 @@ void acessoSequencialIndexado(const char *nomeArquivo, int chave, int exibirChav
 }
 
 
-/**
- * Realiza uma pesquisa em uma árvore binária de busca construída a partir de um arquivo de registros.
- *
- * Esta função lê registros de um arquivo binário e constrói uma árvore binária de busca. Em seguida,
- * realiza uma pesquisa na árvore para encontrar um registro com a chave especificada. A função também
- * mede o tempo de execução da pesquisa e conta o número de comparações realizadas.
- *
- * @param nomeArquivo Caminho para o arquivo binário de onde os registros são lidos.
- * @param chave Chave do registro a ser pesquisado.
- * @param exibirChaves Flag para indicar se os detalhes do registro encontrado devem ser exibidos.
- */
 void arvoreBinariaPesquisa(const char *nomeArquivo, int chave, int exibirChaves) {
-    // Abrindo o arquivo para leitura
-    FILE *arquivo = fopen(nomeArquivo, "rb");
-    if (!arquivo) {
-        perror("Erro ao abrir o arquivo");
+    FILE *arquivoRegistros = fopen(nomeArquivo, "rb");
+    if (!arquivoRegistros) {
+        perror("Erro ao abrir o arquivo de registros");
         return;
     }
 
-    NoArvore *raiz = NULL;
-    Registro reg;
-    int transferenciasConstrucao = 0; // Inicialize a contagem de transferências
-    int comparacoesConstrucao = 0;    // Inicialize a contagem de comparações
+    int transferenciasConstrucao = 0;
+    int comparacoesConstrucao = 0;
+    long posicaoRaiz = -1;
 
-    // Início da construção da árvore
     clock_t inicioConstrucao = clock();
-    long posicao = 0;
-    while (lerRegistro(arquivo, posicao, &reg, &transferenciasConstrucao)) {
-        raiz = inserirNoArvore(raiz, reg.chave, posicao, &transferenciasConstrucao, &comparacoesConstrucao);
-        posicao++;
-    }
+    construirArvoreBinaria(arquivoRegistros, &transferenciasConstrucao, &comparacoesConstrucao, &posicaoRaiz);
     clock_t fimConstrucao = clock();
     double tempoExecucaoConstrucao = (double)(fimConstrucao - inicioConstrucao) / CLOCKS_PER_SEC;
 
-    // Início da pesquisa
-    int transferenciasPesquisa = 0; 
-    int comparacoesPesquisa = 0;    
+    FILE *arquivoArvore = fopen("src/arvore/arvore.bin", "rb");
+    if (!arquivoArvore) {
+        perror("Erro ao abrir o arquivo da árvore");
+        fclose(arquivoRegistros);
+        return;
+    }
+
+    int transferenciasPesquisa = 0;
+    int comparacoesPesquisa = 0;
     clock_t inicioPesquisa = clock();
 
+    long posicaoEncontrada = buscarNoArvore(arquivoArvore, posicaoRaiz, chave, &transferenciasPesquisa, &comparacoesPesquisa);
     Registro resultado;
-    NoArvore *noEncontrado = buscarNoArvore(raiz, chave, &transferenciasPesquisa, &comparacoesPesquisa);
     bool registroEncontrado = false;
-    
-    if(noEncontrado != NULL){
-        registroEncontrado = lerRegistro(arquivo, noEncontrado->posicao, &resultado, &transferenciasPesquisa);
-    } 
-    
+
+    if (posicaoEncontrada != -1) {
+        registroEncontrado = lerRegistro(arquivoRegistros, posicaoEncontrada, &resultado, &transferenciasPesquisa);
+    }
+
     clock_t fimPesquisa = clock();
     double tempoExecucaoPesquisa = (double)(fimPesquisa - inicioPesquisa) / CLOCKS_PER_SEC;
 
-    // Imprimindo o resultado da pesquisa
     if (registroEncontrado) {
         printf("Registro encontrado!\n");
         printf("Chave: %d\nDado1: %ld\nDado2: %.50s...\n", resultado.chave, resultado.dado1, resultado.dado2);
@@ -151,21 +138,13 @@ void arvoreBinariaPesquisa(const char *nomeArquivo, int chave, int exibirChaves)
         printf("Registro não encontrado no arquivo.\n");
     }
 
-    printf(
-        "\nMétricas da Pesquisa:\n - Transferências: %d\n - Comparações: %d\n - Tempo de execução: %.7f segundos\n", 
-        transferenciasPesquisa, 
-        comparacoesPesquisa, 
-        tempoExecucaoPesquisa
-    );
-    printf(
-        "\nMétricas da Construção do Índice:\n - Transferências: %d\n - Comparações: %d\n - Tempo de execução: %.7f segundos\n", 
-        transferenciasConstrucao, 
-        comparacoesConstrucao, 
-        tempoExecucaoConstrucao
-    );
+    printf("\nMétricas da Pesquisa:\n - Transferências: %d\n - Comparações: %d\n - Tempo de execução: %.7f segundos\n", 
+        transferenciasPesquisa, comparacoesPesquisa, tempoExecucaoPesquisa);
+    printf("\nMétricas da Construção do Índice:\n - Transferências: %d\n - Comparações: %d\n - Tempo de execução: %.7f segundos\n", 
+        transferenciasConstrucao, comparacoesConstrucao, tempoExecucaoConstrucao);
 
-    fclose(arquivo);
-    destruirArvore(raiz);
+    fclose(arquivoRegistros);
+    fclose(arquivoArvore);
 }
 
 /**

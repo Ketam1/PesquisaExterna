@@ -82,20 +82,17 @@ bool inserirRegistroNoNóFolha(NoFolhaArvoreBStar *no, Registro reg, int *transf
 }
 
 void dividirNó(NoArvoreBStar *pai, int index, NoArvoreBStar *nó, int *transferencias, int *comparacoes) {
-
+    return;
 }
 
 NoArvoreBStar* inserirArvoreBStar(NoArvoreBStar *raiz, Registro reg, int *transferencias, int *comparacoes) {
-    // Implementação específica para inserção na árvore B*
-    // ...
+    return NULL;
 }
 
 Registro* buscarArvoreBStar(NoArvoreBStar *raiz, int chave, int *transferencias, int *comparacoes) {
-    // Implementação específica para busca na árvore B*
-    // ...
+    return NULL;
 }
 
 void destruirArvoreBStar(NoArvoreBStar *raiz) {
-    // Implementação específica para destruir a árvore B*
-    // ...
+    return;
 }

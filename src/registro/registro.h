@@ -1,7 +1,7 @@
 #ifndef REGISTRO_H
 #define REGISTRO_H
 
-#define TAMANHO_DADO 5000
+#define TAMANHO_DADO 50
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -15,7 +15,7 @@ typedef struct {
 
 // Protótipos para manipulação de registros
 bool lerRegistro(FILE *arquivo, long posicao, Registro *reg, int *transferencias);
-void escreverRegistro();
+void escreverRegistro(FILE *arquivo, long posicao, const Registro *reg);
 void exibirRegistros(const char *nomeArquivo, int quantidade);
 
 #endif
